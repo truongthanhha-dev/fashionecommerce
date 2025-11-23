@@ -16,20 +16,25 @@
 
 import { clerkMiddleware } from '@clerk/nextjs/server'
 
-// Cho phép các API cung cấp dữ liệu cho trang mua sắm có thể truy cập công khai.
-const publicRoutes = [
-  '/sign-in(.*)',
-  '/sign-up(.*)',
-  '/api/collections(.*)',
-  '/api/products(.*)',
-  '/api/search(.*)',
-  '/api/orders/customers(.*)',
-  '/api/checkout',
-  '/api/webhooks(.*)',
-]
+export default clerkMiddleware((auth, req) => {
+  const publicRoutes = [
+    '/sign-in(.*)',
+    '/sign-up(.*)',
+    '/api/collections(.*)',
+    '/api/products(.*)',
+    '/api/search(.*)',
+    '/api/orders/customers(.*)',
+    '/api/checkout',
+    '/api/webhooks(.*)',
+  ]
 
-export default clerkMiddleware({
-  publicRoutes,
+  const url = req.nextUrl.pathname
+
+  if (publicRoutes.some((route) => new RegExp(`^${route}$`).test(url))) {
+    return
+  }
+
+  auth().protect()
 })
 
 export const config = {
