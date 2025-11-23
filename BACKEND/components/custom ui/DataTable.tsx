@@ -51,28 +51,31 @@ export function DataTable<TData, TValue>({
 
   // Search Input
   return (
-    <div className="py-5">
-      <div className="flex items-center py-4">
+    <div className="py-5 space-y-4">
+      <div className="flex flex-wrap items-center gap-4">
         <Input
           placeholder="Search..."
           value={(table.getColumn(searchKey)?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn(searchKey)?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="collection-search-input"
         />
       </div>
 
       {/* Hiển thị Bảng */}
-      <div className="rounded-md border">
-        <Table>
+      <div className="collection-table-wrapper">
+        <Table className="collection-table">
         {/* Hiển thị phần tiêu đề (header) của bảng với các tên cột. */}
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
+              <TableRow
+                key={headerGroup.id}
+                className="collection-table__header-row"
+              >
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className="collection-table__head">
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -92,9 +95,10 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="collection-table__row"
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="collection-table__cell">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -106,11 +110,8 @@ export function DataTable<TData, TValue>({
             ) : (
               // Nếu không có kết quả (không có hàng nào để hiển thị), hiển thị dòng "No results".
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center"
-                >
-                 Không có kết quả.
+                <TableCell colSpan={columns.length} className="h-24 text-center">
+                  Không có kết quả.
                 </TableCell>
               </TableRow>
             )}
@@ -123,6 +124,7 @@ export function DataTable<TData, TValue>({
         <Button
           variant="outline"
           size="sm"
+          className="collection-pagination__button"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
@@ -131,6 +133,7 @@ export function DataTable<TData, TValue>({
         <Button
           variant="outline"
           size="sm"
+          className="collection-pagination__button"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >

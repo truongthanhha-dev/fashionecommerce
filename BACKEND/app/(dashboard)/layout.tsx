@@ -30,12 +30,14 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={inter.className}>
+        <body className={`${inter.className} luxe-body`}>
           <ToasterProvider />
-          <div className="flex max-lg:flex-col text-grey-1">
+          <div className="flex gap-6 max-lg:flex-col text-grey-1 min-h-screen p-6">
             <LeftSideBar />
-            <TopBar />
-            <div className="flex-1">{children}</div>
+            <div className="flex-1 flex flex-col gap-6">
+              <TopBar />
+              <div className="luxe-shell luxe-content flex-1">{children}</div>
+            </div>
           </div>
         </body>
       </html>

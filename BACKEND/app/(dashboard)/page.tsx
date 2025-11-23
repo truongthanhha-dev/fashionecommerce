@@ -1,6 +1,5 @@
 import SalesChart from "@/components/custom ui/SalesChart";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import {
   getSalesPerMonth,
   getTotalCustomers,
@@ -8,64 +7,62 @@ import {
 } from "@/lib/actions/actions";
 import { CircleDollarSign, ShoppingBag, UserRound } from "lucide-react";
 
-import { UserButton } from "@clerk/nextjs";
-
 export default async function Home() {
-  // getTotalSales: Gọi API lấy dữ liệu tổng doanh thu và tổng số đơn hàng.
-  const totalRevenue = await getTotalSales().then((data) => data.totalRevenue);
-  // Gọi API để lấy tổng số đơn hàng 
-  const totalOrders = await getTotalSales().then((data) => data.totalOrders);
-  // Gọi API để lấy tổng số khách hàng.
+  const { totalRevenue, totalOrders } = await getTotalSales();
   const totalCustomers = await getTotalCustomers();
-  // Gọi API để lấy dữ liệu biểu đồ doanh số theo tháng.
   const graphData = await getSalesPerMonth();
 
+  const stats = [
+    {
+      title: "Tổng doanh thu (VNĐ)",
+      value: totalRevenue,
+      icon: <CircleDollarSign className="text-[#b57851]" />,
+    },
+    {
+      title: "Tổng số đơn hàng",
+      value: totalOrders,
+      icon: <ShoppingBag className="text-[#b57851]" />,
+    },
+    {
+      title: "Tổng số khách hàng",
+      value: totalCustomers,
+      icon: <UserRound className="text-[#b57851]" />,
+    },
+  ];
+
   return (
-    <div className="px-8 py-10">
-      <p className="text-heading2-bold">Thống kê</p>
-      <Separator className="bg-grey-1 my-5" />
+    <div className="space-y-10">
+      <section className="grid gap-6 md:grid-cols-3">
+        {stats.map((stat) => (
+          <Card key={stat.title}>
+            <CardHeader className="flex flex-row items-center justify-between border-none">
+              <CardTitle className="text-lg uppercase tracking-[0.2em] text-[#a26444]">
+                {stat.title}
+              </CardTitle>
+              {stat.icon}
+            </CardHeader>
+            <CardContent>
+              <p className="text-3xl font-semibold text-[#3f2115]">
+                {stat.value}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </section>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-10">
-        <Card>
-          <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle>Tổng doanh thu (VNĐ)</CardTitle>
-            {/* <CircleDollarSign className="max-sm:hidden" /> */}
-          </CardHeader>
-          <CardContent>
-            <p className="text-body-bold"> {totalRevenue} </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle>Tổng số đơn hàng</CardTitle>
-            <ShoppingBag className="max-sm:hidden" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-body-bold">{totalOrders}</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle>Tổng số khách hàng</CardTitle>
-            <UserRound className="max-sm:hidden" />
-          </CardHeader>
-          <CardContent>
-            <p className="text-body-bold">{totalCustomers}</p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Card className="mt-10">
-        <CardHeader>
-          <CardTitle>Biểu đồ doanh thu (VNĐ)</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <section className="gilded-card p-8">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="luxe-highlight">Theo dõi</p>
+            <h2 className="text-heading3-bold text-[#6f3c2f]">
+              Biểu đồ doanh thu (VNĐ)
+            </h2>
+          </div>
+        </div>
+        <div className="mt-6">
           <SalesChart data={graphData} />
-        </CardContent>
-      </Card>
+        </div>
+      </section>
     </div>
   );
 }
-
