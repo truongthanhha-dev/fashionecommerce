@@ -40,16 +40,14 @@ const Products = () => {
   }, []);
 
   const totalProducts = products.length;
-  const categoriesCovered = [
-    ...new Set(products.map((product) => product.category).filter(Boolean)),
-  ].length;
-  const collectionsCovered = [
-    ...new Set(
-      products.flatMap((product) =>
-        product.collections?.map((collection) => collection.title)
-      )
-    ),
-  ].length;
+  const categoriesCovered = new Set(
+    products.map((product) => product.category).filter(Boolean)
+  ).size;
+  const collectionsCovered = new Set(
+    products.flatMap((product) =>
+      product.collections?.map((collection) => collection.title)
+    )
+  ).size;
 
   const averagePrice = useMemo(() => {
     if (!totalProducts) return 0;
