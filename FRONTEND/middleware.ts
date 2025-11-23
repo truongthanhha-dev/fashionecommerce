@@ -1,7 +1,7 @@
-import { clerkMiddleware } from '@clerk/nextjs/server'
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
 // Cho phép các route dùng cho khách truy cập (home, sản phẩm, dữ liệu API) public.
-const publicRoutes = [
+const isPublicRoute = createRouteMatcher([
   '/',
   '/products(.*)',
   '/collections(.*)',
@@ -14,10 +14,12 @@ const publicRoutes = [
   '/api/orders/customers(.*)',
   '/api/checkout',
   '/api/webhooks(.*)',
-]
+])
 
-export default clerkMiddleware({
-  publicRoutes,
+export default clerkMiddleware((auth, request) => {
+  if (!isPublicRoute(request)) {
+    auth().protect()
+  }
 })
 
 export const config = {
@@ -26,4 +28,3 @@ export const config = {
     '/(api|trpc)(.*)',
   ],
 }
-
