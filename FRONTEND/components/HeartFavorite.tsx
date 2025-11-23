@@ -21,10 +21,22 @@ const HeartFavorite = ({ product, updateSignedInUser }: HeartFavoriteProps) => {
     try {
       setLoading(true);
       const res = await fetch("/api/users");
+
+      if (!res.ok) {
+        setLoading(false);
+        if (res.status === 401) {
+          setIsLiked(false);
+          return;
+        }
+        console.log("[users_GET]", await res.text());
+        return;
+      }
+
       const data = await res.json();
       setIsLiked(data.wishlist.includes(product._id));
       setLoading(false);
     } catch (err) {
+      setLoading(false);
       console.log("[users_GET]", err);
     }
   };
@@ -46,6 +58,14 @@ const HeartFavorite = ({ product, updateSignedInUser }: HeartFavoriteProps) => {
           method: "POST",
           body: JSON.stringify({ productId: product._id }),
         });
+        if (!res.ok) {
+          if (res.status === 401) {
+            router.push("/sign-in");
+            return;
+          }
+          console.log("[wishlist_POST]", await res.text());
+          return;
+        }
         const updatedUser = await res.json();
         setIsLiked(updatedUser.wishlist.includes(product._id));
         updateSignedInUser && updateSignedInUser(updatedUser);

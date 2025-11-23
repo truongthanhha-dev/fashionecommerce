@@ -16,11 +16,23 @@ const Wishlist = () => {
   const getUser = async () => {
     try {
       const res = await fetch("/api/users")
+
+      if (!res.ok) {
+        setLoading(false)
+        if (res.status === 401) {
+          setSignedInUser(null)
+          return
+        }
+        console.log("[users_GET]", await res.text())
+        return
+      }
+
       const data = await res.json()
       setSignedInUser(data)
       setLoading(false)
     } catch (err) {
-      console.log("[users_GET", err)
+      setLoading(false)
+      console.log("[users_GET]", err)
     }
   }
 
