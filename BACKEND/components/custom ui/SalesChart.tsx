@@ -50,7 +50,7 @@ const CustomTooltip = ({
 const formatAxisValue = (value: number | string) => {
   const numericValue =
     typeof value === "number" ? value : Number.parseFloat(value);
-  if (Number.isNaN(numericValue)) return value;
+  if (Number.isNaN(numericValue)) return String(value);
   return `${Math.round(numericValue / 1000)}k`;
 };
 
