@@ -16,16 +16,25 @@
 
 import { clerkMiddleware } from '@clerk/nextjs/server'
 
-export default clerkMiddleware()
+// Cho phép các API cung cấp dữ liệu cho trang mua sắm có thể truy cập công khai.
+const publicRoutes = [
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/api/collections(.*)',
+  '/api/products(.*)',
+  '/api/search(.*)',
+  '/api/orders/customers(.*)',
+  '/api/checkout',
+  '/api/webhooks(.*)',
+]
+
+export default clerkMiddleware({
+  publicRoutes,
+})
 
 export const config = {
   matcher: [
-    // Bỏ qua các file nội bộ của Next.js và tất cả các file tĩnh
     '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    // Luôn chạy cho các route API
     '/(api|trpc)(.*)',
-    // Thêm các route công khai 
-    '/public-route', // route công khai
-    '/another-public-route', //  có thể thêm nhiều route khác ở đây
   ],
 }

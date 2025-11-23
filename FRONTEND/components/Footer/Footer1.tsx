@@ -4,7 +4,7 @@ const Footer = () => {
   return (
     <section className="section-home-policy">
       <div className="container">
-        <div className="list-policy-row row">
+        <div className=" row">
           {/* Policy Item 1 */}
           <div className="col-xl-3 col-lg-6 col-md-6 col- policy-item">
             <div className="policy-item-inner">
@@ -76,11 +76,11 @@ const Footer = () => {
                     height={50}
                   />
                 </div>
-</div>
+              </div>
               <div className="policy-item-info">
                 <h3 className="info-title">Thanh toán đa dạng</h3>
                 <div className="info-des">
-                Thanh toán khi nhận hàng, Napas, Visa
+                  Thanh toán khi nhận hàng, Napas, Visa
                 </div>
               </div>
             </div>
