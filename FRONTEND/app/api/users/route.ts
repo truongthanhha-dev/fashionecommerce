@@ -4,6 +4,8 @@ import { auth } from "@clerk/nextjs/server";
 
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "force-dynamic";
+
 // GET: lấy thông tin người dùng
 export const GET = async (req: NextRequest) => {
   try {
