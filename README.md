@@ -11,7 +11,7 @@ The system includes a customer-facing store and an admin dashboard for managing 
 - **Backend API Live:** https://fashionecommerce-ashy.vercel.app/
 - **Source Code:** https://github.com/truongthanhha-dev/fashionecommerce.git
 
-> Team size: **01** (self-learning). Source code managed with Git and hosted on GitHub.
+> Source code managed with Git and hosted on GitHub.
 
 ---
 
